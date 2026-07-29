@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import path from 'path';
+import https from 'https';
 
 import connectDB from './config/db.js';
 import initSocket from './services/socket.service.js';
@@ -84,6 +85,18 @@ app.use('/api/messages', messagesRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
+
+const PUBLIC_URL = process.env.PUBLIC_URL;
+if (PUBLIC_URL) {
+  const pingInterval = 14 * 60 * 1000;
+  setInterval(() => {
+    https.get(`${PUBLIC_URL}/api/health`, (res) => {
+      console.log(`Self-ping status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error('Self-ping error:', err.message);
+    });
+  }, pingInterval);
+}
 
 const PORT = process.env.PORT || 5000;
 
