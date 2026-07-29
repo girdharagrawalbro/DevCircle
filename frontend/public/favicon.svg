@@ -1,0 +1,31 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="18"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    style="background:none"
+>
+    <!-- Globe -->
+    <path d="M80 190A176 176 0 1 1 432 190" />
+    <path d="M80 190H432" />
+    <path d="M256 14V326" />
+    <path d="M165 55C190 90 205 139 205 190S190 290 165 325" />
+    <path d="M347 55C322 90 307 139 307 190S322 290 347 325" />
+    <path d="M120 70C160 98 206 113 256 113S352 98 392 70" />
+    <path d="M180 335C205 325 230 320 256 320S307 325 332 335" />
+
+    <!-- Left Person -->
+    <circle cx="105" cy="360" r="40" />
+    <path d="M35 480C35 433 66 400 105 400S175 433 175 480H35Z" />
+
+    <!-- Center Person -->
+    <circle cx="256" cy="410" r="40" />
+    <path d="M186 530C186 483 217 450 256 450S326 483 326 530H186Z" />
+
+    <!-- Right Person -->
+    <circle cx="407" cy="360" r="40" />
+    <path d="M337 480C337 433 368 400 407 400S477 433 477 480H337Z" />
+</svg>
