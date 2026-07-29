@@ -165,8 +165,8 @@ erDiagram
 
 1. **Clone the repository**:
    ```bash
-   git clone <repo-url>
-   cd new
+   git clone https://github.com/girdharagrawalbro/DevCircle
+   cd DevCircle
    ```
 
 2. **Backend Setup**:
@@ -268,4 +268,46 @@ curl -X POST http://localhost:5000/api/ai/improve-post \
     "content": "write draft post about state management in react"
   }'
 ```
+---
+
+## Docker Setup
+
+To run the entire stack (Database, Backend, and Frontend) in containerized production mode, follow these steps:
+
+### Running with Docker Compose
+
+1. **Prerequisites**: Ensure you have [Docker](https://www.docker.com/) and Docker Compose installed.
+2. **Build and Run**:
+   Run the following command in the root folder of the project:
+   ```bash
+   docker-compose up --build
+   ```
+3. **Access Services**:
+   * **Frontend Application**: [http://localhost](http://localhost) (Nginx port 80)
+   * **Backend API server**: [http://localhost:5000](http://localhost:5000)
+   * **MongoDB**: `mongodb://localhost:27017`
+
+---
+
+## Production Deployment
+
+This project is configured for cloud deployment using **Render** (Backend) and **Vercel** (Frontend).
+
+### 1. Backend (Render)
+* **Build Command**: `npm install`
+* **Start Command**: `npm start`
+* **Environment Variables**:
+  * `MONGO_URI`: Your MongoDB Atlas connection string.
+  * `JWT_SECRET` & `JWT_REFRESH_SECRET`: Random secure string keys.
+  * `CLIENT_URL`: The URL of your Vercel frontend (e.g., `https://your-app.vercel.app`).
+  * `NODE_ENV`: `production`
+
+### 2. Frontend (Vercel)
+* **Framework Preset**: `Vite`
+* **Build Command**: `npm run build`
+* **Output Directory**: `dist`
+* **Environment Variables**:
+  * `VITE_API_URL`: Your live Render API address (e.g., `https://your-api.onrender.com/api`).
+  * `VITE_SOCKET_URL`: Your live Render socket root URL (e.g., `https://your-api.onrender.com`).
+
 ---
