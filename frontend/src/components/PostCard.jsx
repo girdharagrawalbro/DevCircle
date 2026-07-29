@@ -160,7 +160,7 @@ export default function PostCard({ post }) {
               <div className="flex flex-wrap items-center gap-x-1.5 text-on-surface-variant font-label-sm">
                 {post.author?.name && <span>@{post.author?.username}</span>}
                 <span className="hidden sm:inline">·</span>
-                <span className="text-xs shrink-0">{timeAgo}</span>
+                <span className={`text-xs shrink-0 ${isOwn ? "mt-1" : ""} }`}>{timeAgo}</span>
               </div>
             </div>
             {isOwn ? (
@@ -173,9 +173,8 @@ export default function PostCard({ post }) {
                 </button>
               </div>
             ) : (
-              <div className="shrink-0 ml-2">
-                <span className="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span>
-              </div>
+              <>
+              </>
             )}
           </div>
 
@@ -283,6 +282,6 @@ export default function PostCard({ post }) {
           )}
         </div>
       </div>
-    </article>
+    </article >
   );
 }

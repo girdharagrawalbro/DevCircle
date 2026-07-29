@@ -120,6 +120,12 @@ export const deletePost = async (postId, user) => {
     throwError(403, 'Not authorized');
   }
 
+  if (post.isRepost && post.originalPost) {
+    await Post.findByIdAndUpdate(post.originalPost, {
+      $pull: { reposts: post.author }
+    });
+  }
+
   await Comment.deleteMany({ post: post._id });
   await post.deleteOne();
 };

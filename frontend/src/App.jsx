@@ -37,7 +37,7 @@ function AppLayout({ children }) {
   return (
     <div className="flex min-h-screen max-w-xxl mx-auto">
       <Sidebar />
-      <div className={`flex-1 min-w-0 relative ${isChatOpenOnMobile ? '' : 'pt-14 md:pt-0'}`}>
+      <div className={`flex-1 min-w-0 relative ${isChatOpenOnMobile ? '' : 'pt-14 pb-16 md:pt-0 md:pb-0'}`}>
         {children}
       </div>
     </div>
