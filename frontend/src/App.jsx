@@ -87,7 +87,7 @@ export default function App() {
 
   if (!initialized && localStorage.getItem('accessToken')) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#0b1326' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#050505' }}>
         <div className="w-8 h-8 border-2 border-outline-variant border-t-primary rounded-full animate-spin" />
       </div>
     );
