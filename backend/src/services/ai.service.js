@@ -57,16 +57,21 @@ const improveQuestion = async (title, body) => {
   }
   const system = `You are a technical Q&A writing assistant. Improve the following question to be clearer, specific, and have enough context for someone to answer. Also suggest 1 to 5 relevant lowercase tech tags.
 IMPORTANT RULE: If the input title and body are purely random keyboard mash, gibberish (e.g. "dfsfgf", "asdasd"), or completely meaningless, set the body field in the JSON to exactly "INVALID_GIBBERISH".
+FORMATTING RULE: You MUST preserve the original paragraph breaks, lists, bullets, and line breaks. Use double newlines (\\n\\n) to separate different paragraphs and bullet points so the text is beautifully formatted and easy to read.
 Return ONLY JSON with format: { "title": "...", "body": "...", "tags": ["tag1", "tag2"] }`;
   const raw = await chat(system, `Title: ${title}\n\nBody: ${body}`);
   try {
     if (String(raw).includes('INVALID_GIBBERISH') || String(raw).toLowerCase().includes('inappropriate text') || String(raw).toLowerCase().includes('cannot improve') || String(raw).toLowerCase().includes('meaningless')) {
       throw new Error('Please enter a meaningful technical question or topic to enhance!');
     }
-    let cleaned = raw.replace(/```json|```/g, '').trim();
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    let cleaned = jsonMatch ? jsonMatch[0].trim() : raw.replace(/```json|```/g, '').trim();
     let parsed = JSON.parse(cleaned);
     if (typeof parsed === 'string') {
-      try { parsed = JSON.parse(parsed); } catch { }
+      try {
+        const jsonMatchInner = parsed.match(/\{[\s\S]*\}/);
+        parsed = JSON.parse(jsonMatchInner ? jsonMatchInner[0].trim() : parsed);
+      } catch { }
     }
     if (typeof parsed === 'object' && parsed !== null) {
       if (typeof parsed.body === 'string' && (parsed.body.startsWith('{') || parsed.body.startsWith('```json'))) {

@@ -61,13 +61,39 @@ export default function AskQuestion() {
       const res = await aiAPI.improveQuestion(title, body);
       const improvedData = res.data.improved;
       if (improvedData && typeof improvedData === 'object') {
+        let finalTitle = improvedData.title || title;
+        let finalBody = improvedData.body || body;
+        let finalTags = Array.isArray(improvedData.tags) ? improvedData.tags : [];
+
+        if (typeof finalBody === 'string' && finalBody.trim().startsWith('{')) {
+          try {
+            const parsed = JSON.parse(finalBody.trim());
+            if (parsed.title) finalTitle = parsed.title;
+            if (parsed.body) finalBody = parsed.body;
+            if (Array.isArray(parsed.tags)) finalTags = parsed.tags;
+          } catch (e) {}
+        }
+
         setAiSuggestion({
-          title: improvedData.title || title,
-          body: typeof improvedData.body === 'string' ? improvedData.body : (improvedData.body ? JSON.stringify(improvedData.body) : body),
-          tags: Array.isArray(improvedData.tags) ? improvedData.tags : []
+          title: finalTitle,
+          body: typeof finalBody === 'string' ? finalBody : JSON.stringify(finalBody),
+          tags: finalTags
         });
       } else if (typeof improvedData === 'string') {
-        setAiSuggestion({ title, body: improvedData, tags: [] });
+        let finalTitle = title;
+        let finalBody = improvedData;
+        let finalTags = [];
+
+        if (improvedData.trim().startsWith('{')) {
+          try {
+            const parsed = JSON.parse(improvedData.trim());
+            if (parsed.title) finalTitle = parsed.title;
+            if (parsed.body) finalBody = parsed.body;
+            if (Array.isArray(parsed.tags)) finalTags = parsed.tags;
+          } catch (e) {}
+        }
+
+        setAiSuggestion({ title: finalTitle, body: finalBody, tags: finalTags });
       }
       setShowAiModal(true);
     } catch (err) {
@@ -333,7 +359,7 @@ export default function AskQuestion() {
                   <div className="flex-1 p-stack-md bg-[#050505] border border-outline-variant rounded-lg space-y-3">
                     <div>
                       <span className="text-xs text-outline-variant font-bold uppercase block mb-1">Title</span>
-                      <p className="font-bold text-on-surface text-sm">{title || '(No title provided)'}</p>
+                      <p className="font-bold text-on-surface text-sm whitespace-pre-wrap">{title || '(No title provided)'}</p>
                     </div>
                     <div className="border-t border-outline-variant/20 pt-2">
                       <span className="text-xs text-outline-variant font-bold uppercase block mb-1">Body</span>
@@ -350,7 +376,7 @@ export default function AskQuestion() {
                   <div className="flex-1 p-stack-md ai-glass rounded-lg sparkle-glow relative space-y-3 text-on-surface border border-primary/30">
                     <div>
                       <span className="text-xs text-primary font-bold uppercase block mb-1">Improved Title</span>
-                      <p className="font-bold text-on-surface text-sm">{aiSuggestion.title || title}</p>
+                      <p className="font-bold text-on-surface text-sm whitespace-pre-wrap">{aiSuggestion.title || title}</p>
                     </div>
                     <div className="border-t border-primary/20 pt-2">
                       <span className="text-xs text-primary font-bold uppercase block mb-1">Improved Body</span>

@@ -170,7 +170,7 @@ export default function PostComposer({ onSuccess }) {
       {/* ai improvement model */}
       {showAiModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-margin-mobile">
-          <div className="w-full max-w-2xl bg-surface rounded-xl shadow-2xl flex flex-col border border-outline-variant overflow-hidden">
+          <div className="w-full max-w-4xl max-h-[90vh] bg-surface rounded-xl shadow-2xl flex flex-col border border-outline-variant overflow-hidden">
             <div className="flex justify-between items-center px-gutter py-stack-md border-b border-outline-variant bg-[#050505]">
               <div className="flex items-center gap-stack-sm">
                 <h2 className="font-headline-md text-headline-md font-bold">AI Improvement</h2>
@@ -184,7 +184,7 @@ export default function PostComposer({ onSuccess }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter items-stretch">
                 <div className="flex flex-col gap-stack-sm">
                   <label className="font-label-sm text-label-sm text-outline uppercase tracking-wider">Original Draft</label>
-                  <div className="flex-1 p-stack-md bg-[#050505]est border border-outline-variant rounded-lg text-on-surface-variant italic min-h-[120px]">
+                  <div className="flex-1 p-stack-md bg-[#050505] border border-outline-variant rounded-lg text-on-surface-variant italic min-h-[220px] max-h-[460px] overflow-y-auto whitespace-pre-wrap">
                     "{content}"
                   </div>
                 </div>
@@ -193,8 +193,8 @@ export default function PostComposer({ onSuccess }) {
                   <label className="font-label-sm text-label-sm text-primary uppercase tracking-wider flex items-center gap-1">
                     AI Improved
                   </label>
-                  <div className="flex-1 p-stack-md ai-glass rounded-lg sparkle-glow min-h-[120px] relative">
-                    <p className="text-on-surface leading-relaxed">{aiSuggestion}</p>
+                  <div className="flex-1 p-stack-md ai-glass rounded-lg sparkle-glow min-h-[220px] max-h-[460px] overflow-y-auto relative">
+                    <p className="text-on-surface leading-relaxed whitespace-pre-wrap">{aiSuggestion}</p>
                     <div className="absolute -top-3 -right-3 bg-primary text-on-primary-fixed text-[10px] px-2 py-1 rounded-full font-bold shadow-lg">
                       IMPROVED
                     </div>
@@ -206,13 +206,13 @@ export default function PostComposer({ onSuccess }) {
             <div className="p-gutter bg-[#050505] flex gap-stack-md justify-end items-center border-t border-outline-variant">
               <button
                 onClick={() => setShowAiModal(false)}
-                className="px-gutter py-2.5 bg-surface-container-highest border border-outline-variant text-on-surface rounded font-medium hover:bg-surface-variant transition-all"
+                className="px-gutter py-2.5 bg-surface-container-highest border border-outline-variant text-on-surface rounded-xl font-medium hover:bg-surface-variant active:scale-95 transition-all"
               >
                 Discard
               </button>
               <button
                 onClick={applyAiSuggestion}
-                className="px-gutter py-2.5 bg-primary text-on-primary-container font-bold rounded hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2"
+                className="px-gutter py-2.5 bg-primary text-on-primary-container font-bold rounded-xl hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
               >
                 Apply
                 <span className="material-symbols-outlined text-[18px]">check</span>
