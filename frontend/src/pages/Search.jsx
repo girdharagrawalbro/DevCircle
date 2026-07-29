@@ -215,7 +215,7 @@ export default function Search() {
               </div>
             )
           ) : (
-            <div className="glass-panel rounded-xl p-gutter text-center py-16 border border-outline-variant/20 max-w-md mx-auto my-8">
+            <div className="glass-panel rounded-xl p-gutter text-center py-160 max-w-md mx-auto my-8">
               <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">search</span>
               <p className="text-on-surface font-headline-sm font-bold mb-2">Explore DevCircle</p>
               <p className="text-on-surface-variant font-body-md">Start searching users, posts, and questions.</p>

@@ -100,7 +100,7 @@ export default function Questions() {
             <div className="w-8 h-8 border-2 border-outline-variant border-t-primary rounded-full animate-spin" />
           </div>
         ) : questions.length === 0 ? (
-          <div className="glass-panel rounded-xl p-gutter text-center py-16 border border-outline-variant/20 max-w-md mx-auto my-8">
+          <div className="glass-panel rounded-xl p-gutter text-center py-16 max-w-md mx-auto my-8">
             <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">quiz</span>
             <p className="text-on-surface font-headline-sm font-bold mb-2">No questions found</p>
             <p className="text-on-surface-variant font-body-md">Be the first to ask the community!</p>

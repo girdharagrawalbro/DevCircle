@@ -48,7 +48,7 @@ export default function Feed() {
 
         <div className="divide-y divide-outline-variant/10">
           {posts.length === 0 && !loading && (
-            <div className="glass-panel rounded-xl p-gutter text-center py-16 border border-outline-variant/20 max-w-md mx-auto my-8">
+            <div className="glass-panel rounded-xl p-gutter text-center py-16 max-w-md mx-auto my-8">
               <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">rss_feed</span>
               <p className="text-on-surface font-headline-sm font-bold mb-2">No posts to display</p>
               <p className="text-on-surface-variant font-body-md">Your feed is empty. Follow developers to see their posts.</p>

@@ -143,7 +143,7 @@ export default function Notifications() {
           </div>
 
           {notifications.length === 0 ? (
-            <div className="glass-panel rounded-xl p-gutter text-center py-16 border border-outline-variant/20 max-w-md mx-auto my-8">
+            <div className="glass-panel rounded-xl p-gutter text-center py-16 max-w-md mx-auto my-8">
               <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">notifications_off</span>
               <p className="text-on-surface font-headline-sm font-bold mb-2">Clean slate!</p>
               <p className="text-on-surface-variant font-body-md">No notifications yet. We'll alert you when there is activity.</p>
