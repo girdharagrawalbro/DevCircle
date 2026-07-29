@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevCircle — Community Platform for Developers</title>
+  <meta name="description"
+    content="DevCircle is a community platform for developers to share posts, ask questions, follow peers, and engage in real-time. Powered by AI." />
+  <meta name="theme-color" content="#c0c1ff" />
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <!-- Fonts: Geist + JetBrains Mono -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+      font-size: inherit;
+    }
+
+    /* Glass effect utility */
+    .glass-effect {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Card hover glow */
+    .card-hover:hover {
+      border-color: #6366F1;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

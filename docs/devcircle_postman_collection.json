@@ -1,0 +1,1095 @@
+{
+  "info": {
+    "_postman_id": "8c459f6b-71db-496a-b286-63e8a4a58df9",
+    "name": "DevCircle API Collection",
+    "description": "API collection for DevCircle community platform covering authentication, feed posts, Q&A threads, private messages, search, real-time notifications, and Gemini AI assistants.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"username\": \"johndoe\",\n  \"email\": \"johndoe@example.com\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/register",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"johndoe@example.com\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/auth/me",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/auth/refresh-token",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/auth/logout",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/profile/:userId",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "users",
+                "profile",
+                ":userId"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "65b4c6e3b5e40e6c53d10001"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "John Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "bio",
+                  "value": "Fullstack developer specializing in React and Node.js.",
+                  "type": "text"
+                },
+                {
+                  "key": "githubLink",
+                  "value": "https://github.com/johndoe",
+                  "type": "text"
+                },
+                {
+                  "key": "skills",
+                  "value": "React,Node.js,MongoDB,Tailwind",
+                  "type": "text"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "coverPhoto",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/profile",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Follow or Unfollow User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/:userId/follow",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "users",
+                ":userId",
+                "follow"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "65b4c6e3b5e40e6c53d10002"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get Posts Feed",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/posts?page=1&limit=10",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "content",
+                  "value": "Excited to share that I have just launched DevCircle! Here is the tech stack showcase.",
+                  "type": "text"
+                },
+                {
+                  "key": "tags",
+                  "value": "react,vite,express,mongodb",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/posts",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Like or Unlike Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/posts/:postId/like",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts",
+                ":postId",
+                "like"
+              ],
+              "variable": [
+                {
+                  "key": "postId",
+                  "value": "65b4c6e3b5e40e6c53d10003"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Comment on Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"This looks fantastic! Looking forward to using it.\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/posts/:postId/comment",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts",
+                ":postId",
+                "comment"
+              ],
+              "variable": [
+                {
+                  "key": "postId",
+                  "value": "65b4c6e3b5e40e6c53d10003"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Repost Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/posts/:postId/repost",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts",
+                ":postId",
+                "repost"
+              ],
+              "variable": [
+                {
+                  "key": "postId",
+                  "value": "65b4c6e3b5e40e6c53d10003"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/posts/:postId",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "posts",
+                ":postId"
+              ],
+              "variable": [
+                {
+                  "key": "postId",
+                  "value": "65b4c6e3b5e40e6c53d10003"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Get Questions List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/questions?sort=newest&tag=react",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "newest"
+                },
+                {
+                  "key": "tag",
+                  "value": "react"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trending Tags",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/questions/trending-tags",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                "trending-tags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Question Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/questions/:questionId",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                ":questionId"
+              ],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "65b4c6e3b5e40e6c53d10004"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to manage side effects in Redux Toolkit thunks?\",\n  \"body\": \"I am trying to run an async operation inside a slice thunk and handle errors inside extraReducers. What are the best practices for clean setups?\",\n  \"tags\": [\"redux\", \"react\", \"javascript\"]\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questions",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Vote on Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"upvote\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questions/:questionId/vote",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                ":questionId",
+                "vote"
+              ],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "65b4c6e3b5e40e6c53d10004"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Answer to Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"The recommended way is to use createAsyncThunk. Return data from the async payload creator, and catch API errors wrapping them with rejectWithValue.\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questions/:questionId/answers",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                ":questionId",
+                "answers"
+              ],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "65b4c6e3b5e40e6c53d10004"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Vote on Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"upvote\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questions/:questionId/answers/:answerId/vote",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                ":questionId",
+                "answers",
+                ":answerId",
+                "vote"
+              ],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "65b4c6e3b5e40e6c53d10004"
+                },
+                {
+                  "key": "answerId",
+                  "value": "65b4c6e3b5e40e6c53d10005"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Accept Answer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/questions/:questionId/answers/:answerId/accept",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "questions",
+                ":questionId",
+                "answers",
+                ":answerId",
+                "accept"
+              ],
+              "variable": [
+                {
+                  "key": "questionId",
+                  "value": "65b4c6e3b5e40e6c53d10004"
+                },
+                {
+                  "key": "answerId",
+                  "value": "65b4c6e3b5e40e6c53d10005"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI Services",
+      "item": [
+        {
+          "name": "Improve Draft Post Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"here is a draft text. i want help writing this post about state hooks.\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/ai/improve-post",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "ai",
+                "improve-post"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Improve Draft Question Content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"react compile error\",\n  \"body\": \"i got an error in react build. here is my file stack. how to debug?\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/ai/improve-question",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "ai",
+                "improve-question"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Question Vagueness",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"how to write code\",\n  \"body\": \"is there a best way to write code?\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/ai/validate-question",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "ai",
+                "validate-question"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/notifications?page=1&limit=20",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification Read",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/notifications/:notificationId/read",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notifications",
+                ":notificationId",
+                "read"
+              ],
+              "variable": [
+                {
+                  "key": "notificationId",
+                  "value": "65b4c6e3b5e40e6c53d10006"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark All Notifications Read",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/notifications/read-all",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Get Messages Contact List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/messages/contacts",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "messages",
+                "contacts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Private Conversation History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/messages/:recipientId",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "messages",
+                ":recipientId"
+              ],
+              "variable": [
+                {
+                  "key": "recipientId",
+                  "value": "65b4c6e3b5e40e6c53d10002"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send Direct Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientId\": \"65b4c6e3b5e40e6c53d10002\",\n  \"text\": \"Hey, how is the MVP deployment progressing? Let me know if you need help!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/messages",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Global Unified Search",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/search?q=react&type=all",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "react"
+                },
+                {
+                  "key": "type",
+                  "value": "all"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "ACCESS_TOKEN",
+      "value": "insert_jwt_access_token_here",
+      "type": "string"
+    },
+    {
+      "key": "REFRESH_TOKEN",
+      "value": "insert_jwt_refresh_token_here",
+      "type": "string"
+    }
+  ]
+}
