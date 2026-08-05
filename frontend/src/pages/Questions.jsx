@@ -8,6 +8,33 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { selectUser } from '../features/auth/authSlice';
 import { formatDistanceToNow } from 'date-fns';
 import useScrollToTop from '../hooks/useScrollToTop';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+const QuestionSkeleton = () => (
+  <div className="glass-panel p-gutter rounded-xl border border-outline-variant/30">
+    <div className="flex gap-gutter">
+      <div className="hidden sm:flex flex-col items-center gap-2 min-w-[64px]">
+        <Skeleton width={40} height={16} />
+        <Skeleton width={50} height={16} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <Skeleton height={20} className="mb-2" width="80%" />
+        <Skeleton count={1} height={14} className="mb-3" />
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-2">
+          <div className="flex gap-2">
+            <Skeleton width={50} height={18} />
+            <Skeleton width={60} height={18} />
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton circle width={24} height={24} />
+            <Skeleton width={80} height={14} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default function Questions() {
   const dispatch = useDispatch();
@@ -38,50 +65,36 @@ export default function Questions() {
     <div className="flex justify-center w-full min-h-screen">
       <main className="w-full max-w-4xl min-w-0 px-margin-mobile md:px-gutter py-stack-md md:py-stack-lg">
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-stack-md mb-stack-lg">
-          <div>
-            <h1 className="mb-stack-md text-[24px] font-serif tracking-tight text-on-surface">Explore Questions</h1>
-            <p className="text-on-surface-variant font-body-md mt-1">Discover technical solutions from the community.</p>
-          </div>
+        <div className="flex justify-between items-center mb-stack-lg">
+          <h1 className="text-[28px] font-serif tracking-tight text-on-surface">Questions</h1>
           <Link
             to="/questions/ask"
-            className="bg-primary text-on-primary-fixed py-stack-sm px-stack-lg rounded-lg font-bold active:scale-[0.98] transition-transform flex items-center justify-center gap-2 hover:opacity-90"
+            className="bg-primary text-on-primary-fixed px-stack-lg py-stack-sm rounded-xl font-bold active:scale-95 transition-all hover:bg-primary/90"
           >
-            <span className="material-symbols-outlined">add_circle</span>
             Ask Question
           </Link>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-stack-md mb-gutter md:border-b border-outline-variant/20 pb-0 md:pb-4">
-          <div className="flex bg-surface-container rounded-lg p-1 border border-outline-variant/30">
-            {['newest', 'active', 'unanswered'].map((opt) => (
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-stack-lg">
+          <div className="flex gap-2 bg-[#050505] p-1 rounded-xl border border-outline-variant/20 max-w-max">
+            {['newest', 'top', 'unanswered'].map((s) => (
               <button
-                key={opt}
-                onClick={() => setSort(opt)}
-                className={`px-4 py-1.5 rounded-md text-body-md transition-all capitalize ${sort === opt ? 'bg-[#6366F1] text-white' : 'text-on-surface-variant hover:text-on-surface'
+                key={s}
+                onClick={() => setSort(s)}
+                className={`px-4 py-1.5 rounded-lg text-label-sm font-label-sm capitalize transition-all active:scale-95 ${sort === s ? 'bg-surface-container-highest text-primary font-bold' : 'text-on-surface-variant hover:text-on-surface'
                   }`}
               >
-                {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                {s}
               </button>
             ))}
-          </div>
-          <div className="text-label-sm font-label-sm text-outline-variant uppercase tracking-wider">
-            {questions.length} Questions found
           </div>
         </div>
 
         {sortedTags.length > 0 && (
-          <div className="mb-gutter">
-            <h3 className="text-label-sm font-label-sm uppercase tracking-wider text-outline-variant mb-2">Filter by Trending Topic</h3>
-            <div className="flex flex-nowrap lg:flex-wrap gap-2 overflow-x-auto no-scrollbar pb-1">
-              <button
-                onClick={() => setActiveTag('')}
-                className={`px-3 py-1 rounded text-label-sm font-label-sm border border-outline-variant/30 transition-colors shrink-0 ${!activeTag ? 'bg-[#6366F1] text-white border-transparent' : 'bg-surface-container-highest text-on-surface-variant hover:text-primary'
-                  }`}
-              >
-                All
-              </button>
-              {sortedTags.slice(0, 8).map((t) => (
+          <div className="mb-stack-lg border border-outline-variant/15 p-4 rounded-2xl bg-surface-container-low/30 backdrop-blur-md">
+            <h3 className="text-xs uppercase tracking-wider text-outline mb-3 font-bold">Trending Topics</h3>
+            <div className="flex flex-wrap gap-2">
+              {sortedTags.map((t) => (
                 <button
                   key={t.tag}
                   onClick={() => setActiveTag(activeTag === t.tag ? '' : t.tag)}
@@ -96,9 +109,13 @@ export default function Questions() {
         )}
 
         {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="w-8 h-8 border-2 border-outline-variant border-t-primary rounded-full animate-spin" />
-          </div>
+          <SkeletonTheme baseColor="#141414" highlightColor="#222222">
+            <div className="space-y-4">
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+            </div>
+          </SkeletonTheme>
         ) : questions.length === 0 ? (
           <div className="glass-panel rounded-xl p-gutter text-center py-16 max-w-md mx-auto my-8">
             <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">quiz</span>

@@ -54,6 +54,8 @@ export default function Notifications() {
         return <span className="material-symbols-outlined text-primary font-fill-1 text-sm">quiz</span>;
       case 'accept_answer':
         return <span className="material-symbols-outlined text-secondary font-fill-1 text-sm">check_circle</span>;
+      case 'message':
+        return <span className="material-symbols-outlined text-primary font-fill-1 text-sm">chat</span>;
       default:
         return <span className="material-symbols-outlined text-outline text-sm">notifications</span>;
     }
@@ -104,6 +106,12 @@ export default function Notifications() {
             <strong className="text-on-surface font-bold">{senderName}</strong> mentioned you
           </span>
         );
+      case 'message':
+        return (
+          <span>
+            <strong className="text-on-surface font-bold">{senderName}</strong> sent you a message
+          </span>
+        );
       default:
         return (
           <span>
@@ -114,6 +122,9 @@ export default function Notifications() {
   };
 
   const getTargetLink = (n) => {
+    if (n.type === 'message' && n.sender?._id) {
+      return `/messages/${n.sender._id}`;
+    }
     if (n.type === 'follow' && n.sender?._id) {
       return `/profile/${n.sender._id}`;
     }

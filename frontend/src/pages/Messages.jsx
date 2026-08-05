@@ -7,6 +7,35 @@ import { searchAPI } from '../services/search.service';
 import { usersAPI } from '../services/users.service';
 import { getSocket } from '../socket/socketClient';
 import toast from 'react-hot-toast';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+const ConversationSkeleton = () => (
+  <div className="px-3 py-1">
+    <div className="flex items-center gap-4 p-3 rounded-xl">
+      <Skeleton circle width={48} height={48} />
+      <div className="flex-1">
+        <Skeleton height={16} width="60%" className="mb-2" />
+        <Skeleton height={12} width="80%" />
+      </div>
+    </div>
+  </div>
+);
+
+const MessageSkeleton = ({ isOwn }) => (
+  <div className={`flex gap-4 max-w-[80%] ${isOwn ? 'self-end flex-row-reverse' : ''}`}>
+    <Skeleton circle width={32} height={32} className="self-end mb-2" />
+    <div className={`space-y-1 ${isOwn ? 'flex flex-col items-end' : ''}`}>
+      <div className={`px-4 py-3 min-w-[120px] rounded-2xl ${isOwn
+        ? 'bg-primary/20 rounded-br-none'
+        : 'bg-surface-container-highest rounded-bl-none'
+        }`}>
+        <Skeleton height={14} width="100%" />
+      </div>
+      <Skeleton width={40} height={8} />
+    </div>
+  </div>
+);
 
 export default function Messages() {
   const user = useSelector(selectUser);
@@ -19,6 +48,8 @@ export default function Messages() {
   const [selectedContact, setSelectedContact] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [convosLoading, setConvosLoading] = useState(true);
+  const [messagesLoading, setMessagesLoading] = useState(false);
   const chatRef = useRef(null);
 
   const fetchConvos = async () => {
@@ -27,6 +58,8 @@ export default function Messages() {
       setConversations(res.data.conversations || []);
     } catch {
       toast.error('Failed to load conversations');
+    } finally {
+      setConvosLoading(false);
     }
   };
 
@@ -64,11 +97,14 @@ export default function Messages() {
     if (!selectedContact) return;
 
     const fetchHistory = async () => {
+      setMessagesLoading(true);
       try {
         const res = await messagesAPI.getMessages(selectedContact._id);
         setMessages(res.data.messages || []);
       } catch {
         toast.error('Failed to load message history');
+      } finally {
+        setMessagesLoading(false);
       }
     };
 
@@ -130,7 +166,16 @@ export default function Messages() {
     if (val.trim().length >= 2) {
       try {
         const res = await searchAPI.search(val.trim(), 'users');
-        const filtered = (res.data.users || []).filter(u => u._id !== user?._id);
+        const searchUsers = res.data.users || [];
+        const followersSet = new Set((user?.followers || []).map(id => id.toString()));
+        const followingSet = new Set((user?.following || []).map(id => id.toString()));
+        const existingChatSet = new Set(conversations.map(c => c.contact._id.toString()));
+
+        const filtered = searchUsers.filter(u => {
+          const uIdStr = u._id.toString();
+          if (uIdStr === user?._id?.toString()) return false;
+          return followersSet.has(uIdStr) || followingSet.has(uIdStr) || existingChatSet.has(uIdStr);
+        });
         setSearchResults(filtered);
       } catch {
         // silent catch
@@ -238,7 +283,11 @@ export default function Messages() {
                           )}
                         </div>
                         <p className={`text-xs truncate ${isActive ? 'text-on-surface font-medium' : 'text-on-surface-variant'}`}>{c.lastMessage.content}</p>
+
                       </div>
+                      <p className='text-xs truncate'>
+                        {new Date(c.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
                     </div>
                   </div>
                 );
@@ -260,22 +309,24 @@ export default function Messages() {
                   >
                     <span className="material-symbols-outlined text-[24px]">arrow_back</span>
                   </button>
-                  <div className="w-10 h-10 rounded-xl overflow-hidden bg-primary/20 flex items-center justify-center text-primary font-bold">
-                    {selectedContact.avatar ? (
-                      <img className="w-full h-full object-cover" src={selectedContact.avatar} alt="" />
-                    ) : (
-                      selectedContact.username[0].toUpperCase()
-                    )}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="font-body-lg text-body-lg font-semibold text-on-surface">{selectedContact.name || `@${selectedContact.username}`}</h2>
-                      {selectedContact.isOnline && <span className="w-2 h-2 rounded-full bg-secondary" />}
+                  <Link to={`/profile/${selectedContact._id}`} className="flex items-center gap-4 hover:opacity-85 transition-opacity">
+                    <div className="w-10 h-10 rounded-xl overflow-hidden bg-primary/20 flex items-center justify-center text-primary font-bold">
+                      {selectedContact.avatar ? (
+                        <img className="w-full h-full object-cover" src={selectedContact.avatar} alt="" />
+                      ) : (
+                        selectedContact.username[0].toUpperCase()
+                      )}
                     </div>
-                    <p className="text-xs text-on-surface-variant">
-                      {selectedContact.isOnline ? 'Online' : 'Offline'}
-                    </p>
-                  </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h2 className="font-body-lg text-body-lg font-semibold text-on-surface hover:underline">{selectedContact.name || `@${selectedContact.username}`}</h2>
+                        {selectedContact.isOnline && <span className="w-2 h-2 rounded-full bg-secondary" />}
+                      </div>
+                      <p className="text-xs text-on-surface-variant">
+                        {selectedContact.isOnline ? 'Online' : 'Offline'}
+                      </p>
+                    </div>
+                  </Link>
                 </div>
               </header>
 
@@ -305,9 +356,18 @@ export default function Messages() {
                             }`}>
                             <p className="text-body-md select-text">{m.content}</p>
                           </div>
-                          <span className="text-[9px] text-on-surface-variant/50 px-1">
-                            {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                          <div className="flex items-center gap-0.5 px-1">
+                            <span className="text-[9px] text-on-surface-variant/50">
+                              {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                            {isOwn && (
+                              m.read ? (
+                                <span className="material-symbols-outlined text-[#3b82f6] text-[13px] font-bold select-none">done_all</span>
+                              ) : (
+                                <span className="material-symbols-outlined text-on-surface-variant/40 text-[13px] select-none">done</span>
+                              )
+                            )}
+                          </div>
                         </div>
                       </div>
                     );

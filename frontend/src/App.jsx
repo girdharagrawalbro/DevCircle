@@ -64,6 +64,8 @@ export default function App() {
       dispatch(fetchNotifications());
 
       const { type, sender } = data;
+      if (type === 'message') return;
+
       let msg = 'New notification';
       if (type === 'like') msg = `${sender} liked your post!`;
       if (type === 'comment') msg = `${sender} commented on your post!`;
@@ -75,6 +77,8 @@ export default function App() {
     });
 
     socket.on('new_message', (msg) => {
+      const activeChatId = window.location.pathname.split('/messages/')[1];
+      if (activeChatId === msg.sender._id.toString()) return;
       toast(`New message from ${msg.sender.username}`, { icon: '💬' });
     });
 

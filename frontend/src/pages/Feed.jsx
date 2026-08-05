@@ -10,6 +10,29 @@ import PostComposer from '../components/PostComposer';
 import { useNavigate } from 'react-router-dom';
 
 import useScrollToTop from '../hooks/useScrollToTop';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+const PostSkeleton = () => (
+  <div className="p-stack-md border-b border-outline-variant/10">
+    <div className="flex gap-3">
+      <Skeleton circle width={40} height={40} />
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-2">
+          <Skeleton width={120} height={16} />
+          <Skeleton width={60} height={12} />
+        </div>
+        <Skeleton count={2} className="mb-2" />
+        <Skeleton width="60%" className="mb-4" />
+        <div className="mt-2 flex justify-between max-w-xs">
+          <Skeleton width={40} height={16} />
+          <Skeleton width={40} height={16} />
+          <Skeleton width={40} height={16} />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default function Feed() {
   const dispatch = useDispatch();
@@ -47,6 +70,14 @@ export default function Feed() {
         <PostComposer />
 
         <div className="divide-y divide-outline-variant/10">
+          {posts.length === 0 && loading && (
+            <SkeletonTheme baseColor="#141414" highlightColor="#222222">
+              <PostSkeleton />
+              <PostSkeleton />
+              <PostSkeleton />
+            </SkeletonTheme>
+          )}
+
           {posts.length === 0 && !loading && (
             <div className="glass-panel rounded-xl p-gutter text-center py-16 max-w-md mx-auto my-8">
               <span className="material-symbols-outlined text-5xl mb-4 block text-on-surface-variant/40">rss_feed</span>
@@ -62,10 +93,10 @@ export default function Feed() {
             return <PostCard key={post._id} post={post} />;
           })}
 
-          {loading && (
-            <div className="flex justify-center p-gutter">
-              <div className="w-6 h-6 border-2 border-outline-variant border-t-primary rounded-full animate-spin" />
-            </div>
+          {posts.length > 0 && loading && (
+            <SkeletonTheme baseColor="#141414" highlightColor="#222222">
+              <PostSkeleton />
+            </SkeletonTheme>
           )}
         </div>
       </main>

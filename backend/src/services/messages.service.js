@@ -1,5 +1,6 @@
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import Notification from '../models/Notification.js';
 
 const throwError = (statusCode, message) => {
   const err = new Error(message);
@@ -26,7 +27,16 @@ export const sendMessage = async (senderId, receiverId, content, io) => {
   await message.populate('sender', 'name username avatar');
   await message.populate('receiver', 'name username avatar');
 
+  await Notification.create({
+    recipient: receiverId,
+    sender: senderId,
+    type: 'message',
+    referenceId: message._id,
+    referenceModel: 'Message',
+  });
+
   io?.to(receiverId.toString()).emit('new_message', message);
+  io?.to(receiverId.toString()).emit('notification', { type: 'message', sender: message.sender.username });
 
   return message;
 };
